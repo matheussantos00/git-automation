@@ -1,8 +1,13 @@
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+import sys
+import time
 
+name = sys.argv[1]
+description = sys.argv[2]
 #  ------------------------------------------------
+print('Inicializando repositório local de remoto: ' + name)
 try:
     file = open('login.txt', 'x')
     file.write(input('login: ')+'\n')
@@ -18,19 +23,22 @@ finally:
     file.close()
 #  ------------------------------------------------
 
-repositorio = {'repository[name]':'testando',
-                 'repository[description]':'testando',
+repositorio = {'repository[name]':name,
+                 'repository[description]':description,
                  'repository[visibility]':'public',
                  'repository[auto_init]':0,
                  'repository[gitignore_template]':'',
-                 'owner':'matheussantos00'}
+                 'owner': usuario['login']}
 
 a = []
 #  ------------------------------------------------
 site = requests.Session()
 url = 'https://github.com'
+url1 = url + '/new'
+url2 = url + 'repositories'
 
 login_page = site.get(url + '/login')  # request para a página de login
+time.sleep(3)
 if login_page.status_code == 200:
     print("Request bem sucedio na página de login")
     content = login_page.content
@@ -42,11 +50,11 @@ if login_page.status_code == 200:
         print('Login executado')
         #  ------------------------------------------------
         new_page = site.get(url + '/new')  # request para a página de criação de repositórios
+        time.sleep(3)
         if new_page.status_code == 200:
             print('Acesso a página de criação de repositórios')
             content = new_page.content
             soup = BeautifulSoup(content, 'html.parser')
-
             for x in soup.find_all('input', attrs={'name': 'authenticity_token'}):  #  armazenar todos os tokens da página
                 a.append(x.attrs['value'])
 
@@ -56,6 +64,7 @@ if login_page.status_code == 200:
             if new.status_code == 200:
                 print('Repositório criado')
                 repo_page = site.get(url + '/matheussantos00' + '/' + repositorio['repository[name]']) # request para a página do novo repositório
+                time.sleep(3)
                 if repo_page.status_code == 200:
                     print('Acesso ao novo repositório')
                     content = repo_page.content
