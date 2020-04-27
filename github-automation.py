@@ -7,7 +7,7 @@ import time
 name = sys.argv[1]
 description = sys.argv[2]
 #  ------------------------------------------------
-print('Inicializando repositório local de remoto: ' + name)
+print('Inicializando repositório local e remoto: ' + name)
 try:
     file = open('login.txt', 'x')
     file.write(input('login: ')+'\n')
@@ -63,13 +63,7 @@ if login_page.status_code == 200:
             new = site.post(url + '/repositories', data=repositorio)  # criar repositório
             if new.status_code == 200:
                 print('Repositório criado')
-                repo_page = site.get(url + '/matheussantos00' + '/' + repositorio['repository[name]']) # request para a página do novo repositório
-                time.sleep(3)
-                if repo_page.status_code == 200:
-                    print('Acesso ao novo repositório')
-                    content = repo_page.content
-                    soup = BeautifulSoup(content, 'html.parser')
-                    path = 'git remote add origin' + soup.find('button', class_="clone-url-link text-shadow-light js-git-protocol-clone-url")['data-url']  # arazenar todos os tokens da página
+                
     else:
         site.close()  # fecha o request da página de login
 site.close()  # fecha o request da página de login
