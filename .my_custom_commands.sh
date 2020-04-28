@@ -2,7 +2,7 @@
 
 function gitcr() {
   cd ~/projetos/git-automation
-  python3.5 github-automation.py ${1} ${2}
+  python3.5 github-automation.py ${1} "${2}"
   SSH="git remote add origin git@github.com:matheussantos00/${1}.git"
   cd ~/projetos
   mkdir ${1}
