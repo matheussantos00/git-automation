@@ -37,7 +37,7 @@ class GitHub:
     def scrape(self):
         site = requests.Session()
         login_page = site.get(self.url + '/login')  # request para a página de login
-        time.sleep(3)
+        time.sleep(5)
 
         if login_page.status_code == 200:
             print("Acesso à página de login")
@@ -45,16 +45,17 @@ class GitHub:
             soup = BeautifulSoup(content, 'html.parser')  # ler o código da página de login e formatá-lo para HTML
             self.usuario['authenticity_token'] = soup.find('input', attrs={'name': 'authenticity_token'})['value']  # token para login
             login = site.post(self.url + '/session', data=self.usuario)  # enviar login, senha e logar
+            time.sleep(5)
 
             if login.status_code == 200:
                 print('Login executado')
                 new_page = site.get(self.url + '/new')  # request para a página de criação de repositórios
-                time.sleep(3)
+                time.sleep(5)
 
                 if new_page.status_code == 200:
+                    print(new_page.content)
                     print('Acesso à página de criação de repositórios')
-                    content = new_page.content
-                    soup = BeautifulSoup(content, 'html.parser')
+                    soup = BeautifulSoup(new_page.content, 'html.parser')
 
                     for x in soup.find_all('input', attrs={'name': 'authenticity_token'}):
                         self.tokens.append(x.attrs['value'])  # armazenar todos os tokens da página
