@@ -6,7 +6,9 @@ Terminal command: gitcr [REPOSITORY-NAME] ["REPOSITORY DESCRIPTION INSIDE QUOTES
 
 2) The path of the directory (local repository) and the path of the python file are defined in the shell script.
 
-3) The script also execute the "git init command" and the "git remote add origin..." using SSH key. 
+3) The script also execute the "git init command" and the "git remote add origin..." using SSH key.
+
+4) If a "index out of range" error ocurr while executing the python file, edit the file increasing the time.sleep(value). This error ocurrs because the "page.contet" didn't have time to load the current page. 
 
 
 
